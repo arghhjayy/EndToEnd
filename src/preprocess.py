@@ -4,6 +4,7 @@ import joblib
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
+import pandas as pd
 
 
 class DatasetType(Enum):
@@ -13,7 +14,6 @@ class DatasetType(Enum):
 
 
 def preprocess(df, dataset_type=DatasetType.TRAIN):
-    df.y = df.y.replace("no", 0).replace("yes", 1)
     df.marital = df.marital.replace("married", 1)
     df.marital = df.marital.replace("single", 0)
     df.marital = df.marital.replace("divorced", 2)
@@ -22,7 +22,7 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
     df.loan = df.loan.replace(["no", "yes"], [0, 1])
 
     x = df.drop("y", axis=1)
-    y = df["y"]
+    # y = df["y"]
 
     # if it's a training dataset, make a pipeline and save it
     # otherwise, use the saved pipeline for transform
@@ -59,7 +59,6 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
 
 
 if __name__ == "__main__":
-    import pandas as pd
     pd.set_option('future.no_silent_downcasting', True)
     train_df = pd.read_csv("dataset/train.csv")
     train_df_preprocessed = preprocess(train_df)
