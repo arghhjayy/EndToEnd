@@ -5,7 +5,9 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
 import pandas as pd
+import warnings
 
+warnings.filterwarnings("ignore")
 
 class DatasetType(Enum):
     TRAIN = 1
@@ -14,12 +16,12 @@ class DatasetType(Enum):
 
 
 def preprocess(df, dataset_type=DatasetType.TRAIN):
-    df.marital = df.marital.replace("married", 1)
-    df.marital = df.marital.replace("single", 0)
-    df.marital = df.marital.replace("divorced", 2)
-    df.default = df.default.replace(["no", "yes"], [0, 1])
-    df.housing = df.housing.replace(["no", "yes"], [0, 1])
-    df.loan = df.loan.replace(["no", "yes"], [0, 1])
+    df.marital = df.marital.replace({"married": 1})
+    df.marital = df.marital.replace({"single": 0})
+    df.marital = df.marital.replace({"divorced": 2})
+    df.default = df.default.replace({"no": 0, "yes": 1})
+    df.housing = df.housing.replace({"no": 0, "yes": 1})
+    df.loan = df.loan.replace({"no": 0, "yes": 1})
 
     x = df.drop("y", axis=1)
     # y = df["y"]
