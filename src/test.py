@@ -1,7 +1,7 @@
 import joblib
 import pandas as pd
 from preprocess import preprocess
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, accuracy_score
 
 
 def test_model():
@@ -12,6 +12,10 @@ def test_model():
     df_test = preprocess(df_test)
 
     y_pred = model.predict(df_test)
+
+    print(accuracy_score(y_true=y_true, y_pred=y_pred) * 100, "%")
+    print(precision_score(y_true=y_true, y_pred=y_pred) * 100)
+    print(recall_score(y_true=y_true, y_pred=y_pred) * 100)
 
     print(confusion_matrix(y_true=y_true, y_pred=y_pred))
 

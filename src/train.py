@@ -1,6 +1,8 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 import joblib
+from mlflow.models import infer_signature
+import mlflow.sklearn
 
 
 def train():
@@ -11,5 +13,10 @@ def train():
     model = LogisticRegression()
     model.fit(X, y)
 
+    y_pred = model.predict(X)
+
     joblib.dump(model, "artifacts/model.joblib")
+    signature = infer_signature(X, y_pred)
+
+    mlflow.sklearn.log_model(model, "model", signature=signature)
 
