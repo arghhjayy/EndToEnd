@@ -1,5 +1,13 @@
 # End to end ML Project
 
+Project setup:
+
+1. Setup a virtual env using conda: `conda create -n <envname> python=3.12`
+2. Activate the env: `conda activate <envname>`
+3. Install `poetry`: `python -m pip install poetry`
+4. Install all dependencies using `poetry` cli: `poetry install`
+5. Run the project: `python main.py`
+
 To make it work, we need to do a quick hack:
 
 in `<condaenvname>/lib/python3.12/importlib/metadata/__init__.py/`
