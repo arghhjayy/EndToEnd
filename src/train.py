@@ -12,10 +12,15 @@ def train_model():
     y = pd.read_csv("intermediate/y_train.csv")
 
     # dummy training logic
-    model = LogisticRegression()
+    penalty = "l2"
+    tol = 0.002
+    mlflow.log_param("penalty", penalty)
+    mlflow.log_param("tol", tol)
+    model = LogisticRegression(penalty=penalty, tol=tol)
     model.fit(X, y)
 
     y_pred = model.predict(X)
+    y_pred = pd.DataFrame(y_pred, columns=["y"])
 
     joblib.dump(model, "artifacts/model.joblib")
     signature = infer_signature(X, y_pred)

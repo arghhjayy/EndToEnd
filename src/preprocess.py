@@ -25,8 +25,6 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
     df.loan = df.loan.replace({"no": 0, "yes": 1})
 
     X = df.drop("y", axis=1)
-    # y = df["y"]
-    print(X)
 
     # if it's a training dataset, make a pipeline and save it
     # otherwise, use the saved pipeline for transform
@@ -58,7 +56,6 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
         df_preprocessed = pd.DataFrame(
             full_pipeline.transform(X), columns=X.columns
         )
-        print(df_preprocessed)
 
         joblib.dump(full_pipeline, "artifacts/preprocessing_pipeline.joblib")
     else:

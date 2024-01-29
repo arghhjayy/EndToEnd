@@ -1,4 +1,5 @@
 import joblib
+import mlflow
 import pandas as pd
 from sklearn.metrics import (
     accuracy_score,
@@ -19,9 +20,13 @@ def test_model():
 
     y_pred = model.predict(df_test)
 
-    print(accuracy_score(y_true=y_true, y_pred=y_pred) * 100, "%")
-    print(precision_score(y_true=y_true, y_pred=y_pred) * 100)
-    print(recall_score(y_true=y_true, y_pred=y_pred) * 100)
+    accuracy = accuracy_score(y_true=y_true, y_pred=y_pred)
+    precision = precision_score(y_true=y_true, y_pred=y_pred)
+    recall = recall_score(y_true=y_true, y_pred=y_pred)
+
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("precision", precision)
+    mlflow.log_metric("recall", recall)
 
     print(confusion_matrix(y_true=y_true, y_pred=y_pred))
 
