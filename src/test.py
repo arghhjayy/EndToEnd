@@ -1,7 +1,13 @@
 import joblib
 import pandas as pd
-from preprocess import preprocess
-from sklearn.metrics import confusion_matrix, precision_score, recall_score, accuracy_score
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    precision_score,
+    recall_score,
+)
+
+from .preprocess import preprocess
 
 
 def test_model():

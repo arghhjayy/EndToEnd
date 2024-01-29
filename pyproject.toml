@@ -26,6 +26,10 @@ force_grid_wrap = 0
 line_length = 88
 profile = "black"
 
+[tool.black]
+experimental-string-processing = true
+line_length = 79
+
 
 [build-system]
 requires = ["poetry-core"]

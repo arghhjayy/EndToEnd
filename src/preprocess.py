@@ -1,13 +1,14 @@
+import warnings
 from enum import Enum
 
 import joblib
+import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
-import pandas as pd
-import warnings
 
 warnings.filterwarnings("ignore")
+
 
 class DatasetType(Enum):
     TRAIN = 1
@@ -23,26 +24,27 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
     df.housing = df.housing.replace({"no": 0, "yes": 1})
     df.loan = df.loan.replace({"no": 0, "yes": 1})
 
-    x = df.drop("y", axis=1)
+    X = df.drop("y", axis=1)
     # y = df["y"]
+    print(X)
 
     # if it's a training dataset, make a pipeline and save it
     # otherwise, use the saved pipeline for transform
     if dataset_type == DatasetType.TRAIN:
         numerical_features = []
         categorical_features = []
-        for col in list(x.columns):
+        for col in list(X.columns):
             if df[col].dtype == "int64" and col != "marital":
                 numerical_features.append(col)
             else:
                 categorical_features.append(col)
 
         nums_pipeline = Pipeline(
-                        [
-                            ("StandardScaler", StandardScaler()),
-                            ("MinMaxScaler", MinMaxScaler())
-                        ]
-                    )
+            [
+                ("StandardScaler", StandardScaler()),
+                ("MinMaxScaler", MinMaxScaler()),
+            ]
+        )
 
         cats_pipeline = Pipeline([("CategoricalEncoder", OrdinalEncoder())])
 
@@ -52,7 +54,12 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
                 ("cats", cats_pipeline, categorical_features),
             ]
         )
-        df_preprocessed = pd.DataFrame(full_pipeline.fit_transform(x))
+        full_pipeline.fit(X)
+        df_preprocessed = pd.DataFrame(
+            full_pipeline.transform(X), columns=X.columns
+        )
+        print(df_preprocessed)
+
         joblib.dump(full_pipeline, "artifacts/preprocessing_pipeline.joblib")
     else:
         pass
@@ -61,7 +68,7 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
 
 
 if __name__ == "__main__":
-    pd.set_option('future.no_silent_downcasting', True)
+    pd.set_option("future.no_silent_downcasting", True)
     train_df = pd.read_csv("dataset/train.csv")
     train_df_preprocessed = preprocess(train_df)
     print(train_df_preprocessed.head(10))
