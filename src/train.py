@@ -12,7 +12,7 @@ mlflow.set_tracking_uri("http://127.0.0.1:5000")
 def train_model():
     X = pd.read_csv("intermediate/X_train_preprocessed.csv")
     y = pd.read_csv("intermediate/y_train.csv")
-    y = y.values
+    y = y.values.ravel()
 
     # dummy training logic
     params = {
@@ -20,7 +20,7 @@ def train_model():
         "tol": [0.0001, 0.0005, 0.0025, 0.01, 0.05, 0.1],
     }
 
-    model = LogisticRegression()
+    model = LogisticRegression(solver="liblinear")
 
     grid = GridSearchCV(
         model,
@@ -39,7 +39,6 @@ def train_model():
         mlflow.log_param(k, v)
 
     y_pred = best_model.predict(X)
-    y_pred = pd.DataFrame(y_pred, columns=["y"])
 
     metrics = {
         "train_accuracy": accuracy_score(y_true=y, y_pred=y_pred),
@@ -54,7 +53,7 @@ def train_model():
     signature = infer_signature(X, y_pred)
 
     mlflow.sklearn.log_model(
-        model,
+        best_model,
         "model",
         signature=signature,
         registered_model_name="grid_search",
