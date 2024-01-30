@@ -1,4 +1,3 @@
-import warnings
 from enum import Enum
 
 import joblib
@@ -6,8 +5,6 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
-
-warnings.filterwarnings("ignore")
 
 
 class DatasetType(Enum):

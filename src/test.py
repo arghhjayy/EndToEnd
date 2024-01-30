@@ -24,9 +24,9 @@ def test_model():
     precision = precision_score(y_true=y_true, y_pred=y_pred)
     recall = recall_score(y_true=y_true, y_pred=y_pred)
 
-    mlflow.log_metric("accuracy", accuracy)
-    mlflow.log_metric("precision", precision)
-    mlflow.log_metric("recall", recall)
+    mlflow.log_metric("test_accuracy", accuracy)
+    mlflow.log_metric("test_precision", precision)
+    mlflow.log_metric("test_recall", recall)
 
     print(confusion_matrix(y_true=y_true, y_pred=y_pred))
 

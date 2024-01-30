@@ -1,9 +1,13 @@
+import warnings
+
 import mlflow
 import pandas as pd
 
 from src.preprocess import preprocess
 from src.test import test_model
 from src.train import train_model
+
+warnings.filterwarnings("ignore")
 
 
 def main():
