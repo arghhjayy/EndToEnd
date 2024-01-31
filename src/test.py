@@ -9,8 +9,6 @@ from sklearn.metrics import (
     recall_score,
 )
 
-from .preprocess import preprocess
-
 
 @task
 def test_model():

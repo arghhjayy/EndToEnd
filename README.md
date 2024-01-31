@@ -7,7 +7,8 @@ Project setup:
 3. Activate the env: `conda activate <envname>`
 4. Install `poetry`: `python -m pip install poetry`
 5. Install all dependencies using `poetry` cli: `poetry install`
-6. Run the project: `python main.py`
+6. Run the mlflow server: `mlflow server`, run the prefect server: `prefect server start`
+7. Run the project: `python main.py`
 
 To make it work, we need to do a quick hack:
 

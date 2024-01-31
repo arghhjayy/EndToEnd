@@ -1,6 +1,7 @@
 from enum import Enum
 
 import joblib
+import mlflow
 import pandas as pd
 from prefect import task
 from sklearn.compose import ColumnTransformer
@@ -57,6 +58,7 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
         )
 
         joblib.dump(full_pipeline, "artifacts/preprocessing_pipeline.joblib")
+        mlflow.log_artifact("artifacts/preprocessing_pipeline.joblib")
     else:
         pass
 
