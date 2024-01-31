@@ -2,6 +2,7 @@ from enum import Enum
 
 import joblib
 import pandas as pd
+from prefect import task
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
@@ -13,6 +14,7 @@ class DatasetType(Enum):
     VAL = 3
 
 
+@task
 def preprocess(df, dataset_type=DatasetType.TRAIN):
     df.marital = df.marital.replace({"married": 1})
     df.marital = df.marital.replace({"single": 0})

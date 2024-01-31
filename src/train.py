@@ -2,6 +2,7 @@ import joblib
 import mlflow.sklearn
 import pandas as pd
 from mlflow.models import infer_signature
+from prefect import task
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.model_selection import GridSearchCV
@@ -9,6 +10,7 @@ from sklearn.model_selection import GridSearchCV
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
 
+@task
 def train_model():
     X = pd.read_csv("intermediate/X_train_preprocessed.csv")
     y = pd.read_csv("intermediate/y_train.csv")

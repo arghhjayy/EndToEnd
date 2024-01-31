@@ -2,11 +2,12 @@
 
 Project setup:
 
-1. Setup a virtual env using conda: `conda create -n <envname> python=3.12`
-2. Activate the env: `conda activate <envname>`
-3. Install `poetry`: `python -m pip install poetry`
-4. Install all dependencies using `poetry` cli: `poetry install`
-5. Run the project: `python main.py`
+1. Download and install Anaconda: https://www.anaconda.com/download
+2. Setup a virtual env using conda cli: `conda create -n <envname> python=3.12`
+3. Activate the env: `conda activate <envname>`
+4. Install `poetry`: `python -m pip install poetry`
+5. Install all dependencies using `poetry` cli: `poetry install`
+6. Run the project: `python main.py`
 
 To make it work, we need to do a quick hack:
 
