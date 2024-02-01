@@ -1,3 +1,4 @@
+import os
 from enum import Enum
 
 import joblib
@@ -58,15 +59,31 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
         )
 
         joblib.dump(full_pipeline, "artifacts/preprocessing_pipeline.joblib")
-        mlflow.log_artifact("artifacts/preprocessing_pipeline.joblib")
+        if not os.environ["TESTING"]:
+            mlflow.log_artifact("artifacts/preprocessing_pipeline.joblib")
     else:
         pass
 
     return df_preprocessed
 
 
-if __name__ == "__main__":
-    pd.set_option("future.no_silent_downcasting", True)
-    train_df = pd.read_csv("dataset/train.csv")
-    train_df_preprocessed = preprocess(train_df)
-    print(train_df_preprocessed.head(10))
+def load_and_preprocess(dataset: str = "train") -> pd.DataFrame:
+    if dataset == "train":
+        dataset_path = "dataset/train.csv"
+    else:
+        dataset_path = "dataset/test.csv"
+
+    df = pd.read_csv(dataset_path)
+    X, y = df.loc[:"y"], df["y"]
+    y = y.replace({"no": 0, "yes": 1})
+    if os.environ["TESTING"]:
+        X_preprocessed = preprocess.fn(X)
+    else:
+        X_preprocessed = preprocess(X)
+    X_preprocessed.to_csv(
+        f"intermediate/X_{dataset}_preprocessed.csv", index=False
+    )
+    y.to_csv(f"intermediate/y_{dataset}.csv", index=False)
+
+    if os.environ["TESTING"]:
+        return X_preprocessed

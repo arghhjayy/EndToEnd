@@ -11,7 +11,7 @@ from sklearn.metrics import (
 
 
 @task
-def test_model():
+def test_model_performance():
     model = joblib.load("artifacts/model.joblib")
     X_test_preprocessed = pd.read_csv("intermediate/X_test_preprocessed.csv")
     y_true = pd.read_csv("intermediate/y_test.csv").values
