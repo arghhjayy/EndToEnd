@@ -27,3 +27,12 @@ def get(self, name, default):
 in Windows conda, the location of the file most likely is:
 
 `C:\Users\<YourUserName>\anaconda3\envs\<condaenvname>\Lib\importlib\metadata\__init__.py`
+
+## Tools used
+
+- Pandas for data processing/engineering
+- Sklearn for feature engineering and model development
+- Pytest for testing
+- MLFlow for experimentation tracking
+- Prefect for workflow management(done) + orchestration (TBD)
+- Black, isort and Flake8 for code styling and linting
