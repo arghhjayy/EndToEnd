@@ -51,7 +51,10 @@ def generate_data(size):
 
     generated_df = pd.DataFrame(data, df.columns).T
 
-    generated_df.to_csv(f"forinference/inference_input_{strftime("%d-%m-%Y", gmtime())}.csv", index=False)
+    curr = strftime("%d-%m-%Y", gmtime())
+    generated_df.to_csv(
+        f"forinference/inference_input_{curr}.csv", index=False
+    )
 
 
 if __name__ == "__main__":
