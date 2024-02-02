@@ -51,7 +51,7 @@ def train_model():
     for k, v in metrics.items():
         mlflow.log_metric(k, v)
 
-    joblib.dump(best_model, "artifacts/model.joblib")
+    # joblib.dump(best_model, "artifacts/model.joblib")
     signature = infer_signature(X, y_pred)
 
     mlflow.sklearn.log_model(
@@ -60,3 +60,24 @@ def train_model():
         signature=signature,
         registered_model_name="grid_search",
     )
+
+    try:
+        mlflow.sklearn.save_model(
+            best_model,
+            "model_dir",
+            signature=signature,
+            # save to model to pickle instead of the default cloud pickle format
+            serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_PICKLE,
+        )
+    except mlflow.exceptions.MlflowException:
+        import shutil
+
+        shutil.rmtree("model_dir")
+
+        mlflow.sklearn.save_model(
+            best_model,
+            "model_dir",
+            signature=signature,
+            # save to model to pickle instead of the default cloud pickle format
+            serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_PICKLE,
+        )

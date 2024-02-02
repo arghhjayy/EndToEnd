@@ -1,6 +1,6 @@
-import joblib
 import mlflow
 import pandas as pd
+from mlflow.sklearn import load_model
 from prefect import task
 from sklearn.metrics import (
     accuracy_score,
@@ -12,7 +12,7 @@ from sklearn.metrics import (
 
 @task
 def test_model_performance():
-    model = joblib.load("artifacts/model.joblib")
+    model = load_model("model_dir")
     X_test_preprocessed = pd.read_csv("intermediate/X_test_preprocessed.csv")
     y_true = pd.read_csv("intermediate/y_test.csv").values
 
@@ -30,4 +30,4 @@ def test_model_performance():
 
 
 if __name__ == "__main__":
-    test_model()
+    test_model_performance()

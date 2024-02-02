@@ -59,7 +59,7 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
         )
 
         joblib.dump(full_pipeline, "artifacts/preprocessing_pipeline.joblib")
-        if not os.environ["TESTING"]:
+        if not os.environ.get("TESTING", False):
             mlflow.log_artifact("artifacts/preprocessing_pipeline.joblib")
     else:
         pass
@@ -76,7 +76,7 @@ def load_and_preprocess(dataset: str = "train") -> pd.DataFrame:
     df = pd.read_csv(dataset_path)
     X, y = df.loc[:"y"], df["y"]
     y = y.replace({"no": 0, "yes": 1})
-    if os.environ["TESTING"]:
+    if os.environ.get("TESTING", False):
         X_preprocessed = preprocess.fn(X)
     else:
         X_preprocessed = preprocess(X)
@@ -85,5 +85,5 @@ def load_and_preprocess(dataset: str = "train") -> pd.DataFrame:
     )
     y.to_csv(f"intermediate/y_{dataset}.csv", index=False)
 
-    if os.environ["TESTING"]:
+    if os.environ.get("TESTING", False):
         return X_preprocessed
