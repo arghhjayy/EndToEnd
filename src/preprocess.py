@@ -1,5 +1,6 @@
 import os
 from enum import Enum
+from time import gmtime, strftime
 
 import joblib
 import mlflow
@@ -70,8 +71,11 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
 def load_and_preprocess(dataset: str = "train") -> pd.DataFrame:
     if dataset == "train":
         dataset_path = "dataset/train.csv"
-    else:
+    elif dataset == "test":
         dataset_path = "dataset/test.csv"
+    else:
+        curr = strftime("%d-%m-%Y", gmtime())
+        dataset_path = f"forinference/inference_input_{curr}.csv"
 
     df = pd.read_csv(dataset_path)
     X, y = df.loc[:"y"], df["y"]

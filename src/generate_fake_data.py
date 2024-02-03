@@ -1,3 +1,4 @@
+import os
 import random
 from time import gmtime, strftime
 
@@ -52,9 +53,10 @@ def generate_data(size):
     generated_df = pd.DataFrame(data, df.columns).T
 
     curr = strftime("%d-%m-%Y", gmtime())
-    generated_df.to_csv(
-        f"forinference/inference_input_{curr}.csv", index=False
-    )
+    os.makedirs("forinference", exist_ok=True)
+    dataset_path = f"forinference/inference_input_{curr}.csv"
+    generated_df.to_csv(dataset_path, index=False)
+    return dataset_path
 
 
 if __name__ == "__main__":

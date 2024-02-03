@@ -32,6 +32,9 @@ profile = "black"
 experimental-string-processing = true
 line_length = 79
 
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::FutureWarning", "ignore::DeprecationWarning"]
+
 
 [build-system]
 requires = ["poetry-core"]
