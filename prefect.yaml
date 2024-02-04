@@ -1,0 +1,21 @@
+# Generic metadata about this project
+name: EndToEnd
+prefect-version: 2.14.18
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+  - name: generate-data
+    version: v1
+    tags: [data]
+    description: Generate fake data for inference purposes
+    entrypoint: src/generate_fake_data.py:generate_data
+    parameters: {}
+    work_pool:
+      name: data-generator
+      work_queue_name: null
+      job_variables: {}
+    schedule:
+      cron: 41 14 * * *
+      timezone: Asia/Calcutta
+      day_or: true
+      active: true

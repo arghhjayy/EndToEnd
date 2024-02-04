@@ -165,3 +165,4 @@ mlruns/
 mlartifacts/
 model_dir/
 forinference/
+.DS_Store

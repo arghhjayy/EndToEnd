@@ -3,11 +3,16 @@ import random
 from time import gmtime, strftime
 
 import pandas as pd
+from prefect import flow
 
 
 # generate data for dummy inference
-def generate_data(size):
-    df = pd.read_csv("dataset/test.csv")
+@flow(log_prints=True)
+def generate_data(size=1000, based_on="train"):
+    if based_on == "train":
+        df = pd.read_csv("dataset/train.csv")
+    else:
+        df = pd.read_csv("dataset/test.csv")
 
     age = [random.randint(df.age.min(), df.age.max()) for _ in range(size)]
     job = [random.choice(df.job.unique()) for _ in range(size)]
@@ -60,4 +65,5 @@ def generate_data(size):
 
 
 if __name__ == "__main__":
-    generate_data(1000)
+    # generate data everyday, at 2:05 PM IST
+    generate_data.serve(name="generate-data", cron="26 14 * * *")
