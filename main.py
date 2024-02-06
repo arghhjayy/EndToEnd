@@ -16,9 +16,6 @@ def main():
     with open("config.toml", "rb") as f:
         config = tomllib.load(f)
 
-    print(config)
-    return
-
     with mlflow.start_run():
         print("MLFlow run started")
         # preprocess train data
@@ -31,4 +28,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main.fn()
+    main()

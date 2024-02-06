@@ -63,13 +63,14 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
         if not os.environ.get("TESTING", False):
             mlflow.log_artifact("artifacts/preprocessing_pipeline.joblib")
     else:
+        # BUG: load pipeline and transform when a train run is already done
         pass
 
     return df_preprocessed
 
 
 def load_and_preprocess(dataset: str = "train", config=None) -> pd.DataFrame:
-    match dataset:
+    match dataset:  # noqa
         case "train":
             dataset_path = config["data"]["train_path"]
         case "test":
@@ -89,10 +90,11 @@ def load_and_preprocess(dataset: str = "train", config=None) -> pd.DataFrame:
         X_preprocessed = preprocess.fn(X)
     else:
         X_preprocessed = preprocess(X)
+    intermediate_dir = config["data"]["intermediate_data_dir"]
     X_preprocessed.to_csv(
-        f"intermediate/X_{dataset}_preprocessed.csv", index=False
+        f"{intermediate_dir}/X_{dataset}_preprocessed.csv", index=False
     )
-    y.to_csv(f"intermediate/y_{dataset}.csv", index=False)
+    y.to_csv(f"{intermediate_dir}/y_{dataset}.csv", index=False)
 
     if os.environ.get("TESTING", False):
         return X_preprocessed
