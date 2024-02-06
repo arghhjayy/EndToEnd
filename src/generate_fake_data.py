@@ -58,12 +58,15 @@ def generate_data(size=1000, based_on="train"):
     generated_df = pd.DataFrame(data, df.columns).T
 
     curr = strftime("%d-%m-%Y", gmtime())
-    os.makedirs("forinference", exist_ok=True)
-    dataset_path = f"forinference/inference_input_{curr}.csv"
+    os.makedirs("inference", exist_ok=True)
+    os.makedirs("inference/input", exist_ok=True)
+    dataset_path = f"inference/input/input_{curr}.csv"
     generated_df.to_csv(dataset_path, index=False)
     return dataset_path
 
 
 if __name__ == "__main__":
+    # dev:
+    generate_data.fn(size=1000)
     # generate data everyday, at 2:05 PM IST
-    generate_data.serve(name="generate-data", cron="26 14 * * *")
+    # generate_data.serve(name="generate-data", cron="26 14 * * *")

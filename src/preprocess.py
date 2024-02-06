@@ -68,14 +68,19 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
     return df_preprocessed
 
 
-def load_and_preprocess(dataset: str = "train") -> pd.DataFrame:
-    if dataset == "train":
-        dataset_path = "dataset/train.csv"
-    elif dataset == "test":
-        dataset_path = "dataset/test.csv"
-    else:
-        curr = strftime("%d-%m-%Y", gmtime())
-        dataset_path = f"forinference/inference_input_{curr}.csv"
+def load_and_preprocess(dataset: str = "train", config=None) -> pd.DataFrame:
+    match dataset:
+        case "train":
+            dataset_path = config["data"]["train_path"]
+        case "test":
+            dataset_path = config["data"]["test_path"]
+        case "inference":
+            curr = strftime("%d-%m-%Y", gmtime())
+            dataset_path = (
+                config["inference"]["input_dir"] + f"/input_{curr}.csv"
+            )
+        case _:
+            raise ValueError("Please pass a valid value to param 'dataset'")
 
     df = pd.read_csv(dataset_path)
     X, y = df.loc[:"y"], df["y"]

@@ -1,0 +1,10 @@
+taskkill /PID <PID> /F
+
+TODO:
+
+1. testing -- basics done
+2. model monitoring + scheduling it
+3. Dockerize
+4. use databases for input/output
+5. makefile or tox
+6. feature store and vector store
