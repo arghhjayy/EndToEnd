@@ -1,0 +1,8 @@
+[inference]
+input_dir = "inference/input"
+output_dir = "inference/output"
+
+[data]
+train_path = "dataset/train.csv"
+test_path = "dataset/test.csv"
+intermediate_data_dir = "intermediate"

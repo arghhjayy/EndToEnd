@@ -164,5 +164,5 @@ intermediate/
 mlruns/
 mlartifacts/
 model_dir/
-forinference/
+inference/
 .DS_Store
