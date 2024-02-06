@@ -39,13 +39,13 @@ in Windows conda, the location of the file most likely is:
 
 ## TODO list:
 
-:white_check_mark: Train and test flow
-:white_check_mark: Log metrics and artifacts to MLFlow
-:hourglass: Prefect for workflows
-:white_check_mark: Makefile
-:white_check_mark: Basic tests
-:soon: Model monitoring + scheduling it
-:soon: Containerization
-:soon: Use databases for input/output
-:soon: Feature store and vector store - TBD
-:soon: Streaming features
+- :white_check_mark: Train and test flow
+- :white_check_mark: Log metrics and artifacts to MLFlow
+- :hourglass: Prefect for workflows
+- :white_check_mark: Makefile
+- :white_check_mark: Basic tests
+- :soon: Model monitoring + scheduling it
+- :soon: Containerization
+- :soon: Use databases for input/output
+- :soon: Feature store and vector store - TBD
+- :soon: Streaming features
