@@ -7,7 +7,9 @@ run_prefect_server:
 	prefect server start
 run_mlflow_server:
 	mlflow server
-setup_prefect:
-	prefect work-pool create data-generator
-	prefect worker start --pool 'data-generator'
-	prefect deploy
+start_data_generator_worker:
+	prefect work-pool create --type process data-generator-work-pool
+	prefect worker start --pool data-generator-work-pool
+start_batch_inference_worker:
+	prefect work-pool create --type process batch-inference-work-pool
+	prefect worker start --pool batch-inference-work-pool &
