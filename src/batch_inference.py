@@ -4,11 +4,17 @@ from time import gmtime, strftime
 
 import pandas as pd
 from mlflow.sklearn import load_model
+from prefect import flow
 
 from preprocess import load_and_preprocess
 
 
-def infer(config):
+@flow(log_prints=True)
+def infer():
+    os.environ["TESTING"] = "TRUE"
+    with open("config.toml", "rb") as f:
+        config = tomllib.load(f)
+
     model = load_model("model_dir")
     df = load_and_preprocess("inference", config=config)
 
