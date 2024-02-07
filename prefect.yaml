@@ -17,7 +17,7 @@ deployments:
       work_queue_name: null
       job_variables: {}
     schedule:
-      cron: 53 11 * * *
+      cron: 32 12 * * *
       timezone: Asia/Calcutta
       day_or: true
       active: true
@@ -27,7 +27,7 @@ deployments:
         name: batch-inference-work-pool
         work_queue_name: null
     schedule:
-      cron: 54 11 * * *
+      cron: 33 12 * * *
       timezone: Asia/Calcutta
       day_or: true
       active: true

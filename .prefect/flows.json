@@ -1,0 +1,4 @@
+{
+  "generate-data": "src\\generate_fake_data.py:generate_data",
+  "infer": "src\\batch_inference.py:infer"
+}

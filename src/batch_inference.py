@@ -20,7 +20,7 @@ def infer():
 
     y_infer = model.predict(df)
 
-    y_infer = pd.DataFrame(y_infer)
+    y_infer = pd.DataFrame(y_infer, columns=["pred"])
 
     curr = strftime("%d-%m-%Y", gmtime())
     dataset_path = config["inference"]["output_dir"] + f"/output_{curr}.csv"
