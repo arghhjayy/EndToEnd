@@ -1,5 +1,4 @@
 import os
-from enum import Enum
 from time import gmtime, strftime
 
 import joblib
@@ -10,15 +9,11 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
 
-
-class DatasetType(Enum):
-    TRAIN = 1
-    TEST = 2
-    VAL = 3
+from src.data_classes import DatasetType
 
 
 @task
-def preprocess(df, dataset_type=DatasetType.TRAIN):
+def preprocess(df, config=None, dataset_type=DatasetType.TRAIN):
     df.marital = df.marital.replace({"married": 1})
     df.marital = df.marital.replace({"single": 0})
     df.marital = df.marital.replace({"divorced": 2})
@@ -27,6 +22,9 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
     df.loan = df.loan.replace({"no": 0, "yes": 1})
 
     X = df.drop("y", axis=1)
+
+    pipeline_name = "preprocessing_pipeline.joblib"
+    pipeline_path_local = f"artifacts/{pipeline_name}"
 
     # if it's a training dataset, make a pipeline and save it
     # otherwise, use the saved pipeline for transform
@@ -59,29 +57,48 @@ def preprocess(df, dataset_type=DatasetType.TRAIN):
             full_pipeline.transform(X), columns=X.columns
         )
 
-        joblib.dump(full_pipeline, "artifacts/preprocessing_pipeline.joblib")
-        if not os.environ.get("TESTING", False):
-            mlflow.log_artifact("artifacts/preprocessing_pipeline.joblib")
+        joblib.dump(full_pipeline, pipeline_path_local)
+
+        if not os.environ.get("TESTING"):
+            mlflow.log_artifact(
+                pipeline_path_local,
+                run_id=config["run_id"],
+            )
     else:
         # BUG: load pipeline and transform when a train run is already done
-        pass
+        pipeline_path_mlflow = os.path.join(
+            "mlartifacts",
+            config["experiment_id"],
+            config["run_id"],
+            "artifacts",
+            pipeline_name,
+        )
+
+        full_pipeline = joblib.load(pipeline_path_mlflow)
+
+        df_preprocessed = pd.DataFrame(
+            full_pipeline.transform(X), columns=X.columns
+        )
 
     return df_preprocessed
 
 
-def load_and_preprocess(dataset: str = "train", config=None) -> pd.DataFrame:
+def load_and_preprocess(dataset: DatasetType = 1, config=None) -> pd.DataFrame:
     match dataset:  # noqa
-        case "train":
+        case DatasetType.TRAIN:
             dataset_path = config["data"]["train_path"]
-        case "test":
+        case DatasetType.TEST:
             dataset_path = config["data"]["test_path"]
-        case "inference":
+        case DatasetType.BATCH_INFER:
             curr = strftime("%d-%m-%Y", gmtime())
             dataset_path = (
                 config["inference"]["input_dir"] + f"/input_{curr}.csv"
             )
         case _:
-            raise ValueError("Please pass a valid value to param 'dataset'")
+            raise ValueError(
+                f"""Please pass a valid value to param 'dataset',
+                allowed values: {[t.value for t in DatasetType]}"""
+            )
 
     df = pd.read_csv(dataset_path)
     X, y = df.loc[:"y"], df["y"]
@@ -89,7 +106,7 @@ def load_and_preprocess(dataset: str = "train", config=None) -> pd.DataFrame:
     if os.environ.get("TESTING", False):
         X_preprocessed = preprocess.fn(X)
     else:
-        X_preprocessed = preprocess(X)
+        X_preprocessed = preprocess(X, config=config, dataset_type=dataset)
     intermediate_dir = config["data"]["intermediate_data_dir"]
     X_preprocessed.to_csv(
         f"{intermediate_dir}/X_{dataset}_preprocessed.csv", index=False
