@@ -6,6 +6,7 @@ import pandas as pd
 from mlflow.sklearn import load_model
 from prefect import flow
 
+from data_classes import DatasetType
 from preprocess import load_and_preprocess
 
 
@@ -16,7 +17,7 @@ def infer():
         config = tomllib.load(f)
 
     model = load_model("model_dir")
-    df = load_and_preprocess("inference", config=config)
+    df = load_and_preprocess(DatasetType.BATCH_INFER, config=config)
 
     y_infer = model.predict(df)
 
