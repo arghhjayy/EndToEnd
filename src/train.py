@@ -6,8 +6,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.model_selection import GridSearchCV
 
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
-
 
 @task
 def train_model():
