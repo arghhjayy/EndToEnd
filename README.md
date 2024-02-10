@@ -6,7 +6,7 @@ Project setup:
 2. Setup a virtual env using conda cli: `conda env create -f environment.yml`
 3. Activate the env: `conda activate endtoend`
 4. Install `poetry`: `python -m pip install poetry`
-5. Install all dependencies using `poetry` cli: `poetry install`
+5. Install all dependencies using `poetry` cli: `poetry install --no-root`
 6. Run the mlflow server: `mlflow server`, run the prefect server: `prefect server start`
 
 ## Model training:
