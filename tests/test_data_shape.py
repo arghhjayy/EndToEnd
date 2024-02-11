@@ -2,7 +2,6 @@ import os
 import sys
 
 sys.path.append(os.path.abspath("."))
-os.environ["TESTING"] = "TRUE"
 
 
 from src.data_classes import DatasetType  # noqa: E402
