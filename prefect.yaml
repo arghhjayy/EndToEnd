@@ -4,30 +4,39 @@ prefect-version: 2.14.18
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-  - name: generate-data
-    version: v1
-    tags: [data]
-    description: Generate fake data for inference purposes
-    entrypoint: src/generate_fake_data.py:generate_data
-    parameters:
-      size: 2000
-      based_on: train
-    work_pool:
-      name: data-generator-work-pool
-      work_queue_name: null
-      job_variables: {}
-    schedule:
-      cron: 32 12 * * *
-      timezone: Asia/Calcutta
-      day_or: true
-      active: true
-  - name: batch-inference
-    entrypoint: src/batch_inference.py:infer
-    work_pool:
-        name: batch-inference-work-pool
-        work_queue_name: null
-    schedule:
-      cron: 33 12 * * *
-      timezone: Asia/Calcutta
-      day_or: true
-      active: true
+- name: generate-data
+  version: v1
+  tags: [data]
+  description: Generate fake data for inference purposes
+  entrypoint: src/generate_fake_data.py:generate_data
+  parameters:
+    size: 2000
+    based_on: train
+  work_pool:
+    name: data-generator-work-pool
+    work_queue_name:
+    job_variables: {}
+  schedule:
+    cron: 34 14 * * *
+    timezone: Asia/Calcutta
+    day_or: true
+    active: true
+- name: batch-inference
+  entrypoint: src/batch_inference.py:infer
+  description: Perform batch inference on the generated data
+  work_pool:
+    name: batch-inference-work-pool
+    work_queue_name:
+    job_variables: {}
+  schedule:
+    cron: 35 14 * * *
+    timezone: Asia/Calcutta
+    day_or: true
+    active: true
+  version:
+  tags: []
+  description:
+  parameters: {}
+  pull:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /workspaces/EndToEnd

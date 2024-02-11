@@ -17,7 +17,7 @@ def infer():
         config = tomllib.load(f)
 
     model = load_model("model_dir")
-    df = load_and_preprocess(DatasetType.BATCH_INFER, config=config)
+    df = load_and_preprocess(dataset=3, config=config)
 
     y_infer = model.predict(df)
 
@@ -25,6 +25,8 @@ def infer():
 
     curr = strftime("%d-%m-%Y", gmtime())
     dataset_path = config["inference"]["output_dir"] + f"/output_{curr}.csv"
+
+    os.makedirs("inference/output", exist_ok=True)
 
     y_infer.to_csv(dataset_path, index=False)
 

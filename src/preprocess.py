@@ -86,11 +86,14 @@ def preprocess(df, config=None, dataset_type=DatasetType.TRAIN):
 def load_and_preprocess(dataset: DatasetType = 1, config=None) -> pd.DataFrame:
     match dataset:  # noqa
         case DatasetType.TRAIN:
+            print("Using train data")
             dataset_path = config["data"]["train_path"]
         case DatasetType.TEST:
+            print("Using test data")
             dataset_path = config["data"]["test_path"]
-        case DatasetType.BATCH_INFER:
+        case 3:
             curr = strftime("%d-%m-%Y", gmtime())
+            print("done")
             dataset_path = (
                 config["inference"]["input_dir"] + f"/input_{curr}.csv"
             )
