@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.abspath("."))
 
 
-from src.data_classes import DatasetType  # noqa: E402
+from src.enum_classes import DatasetType  # noqa: E402
 from src.generate_fake_data import generate_data  # noqa: E402
 from src.preprocess import load_and_preprocess  # noqa: E402
 
