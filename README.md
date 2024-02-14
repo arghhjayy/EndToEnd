@@ -55,7 +55,7 @@ If you want to run it for debugging, make sure you change the CRON expressions i
 - :hourglass: Prefect for workflows
 - :white_check_mark: Makefile
 - :white_check_mark: Basic tests
-- :soon: Model monitoring + scheduling it
+- :hourglass: Model monitoring + scheduling it
 - :soon: Containerization
 - :soon: Use databases for input/output
 - :soon: Feature store and vector store - TBD
