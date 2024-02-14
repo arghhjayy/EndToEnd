@@ -6,7 +6,7 @@ import pandas as pd
 from mlflow.sklearn import load_model
 from prefect import flow
 
-from data_classes import DatasetType
+from enum_classes import DatasetType
 from preprocess import load_and_preprocess
 
 

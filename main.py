@@ -4,7 +4,7 @@ import warnings
 import mlflow
 from prefect import flow
 
-from src.data_classes import DatasetType
+from src.enum_classes import DatasetType
 from src.preprocess import load_and_preprocess
 from src.test import test_model_performance
 from src.train import train_model

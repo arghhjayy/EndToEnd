@@ -9,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
 
-from src.data_classes import DatasetType
+from src.enum_classes import DatasetType
 
 
 @task
