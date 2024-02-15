@@ -1,12 +1,16 @@
+from time import gmtime, strftime
+
 import pandas as pd
 from evidently.metric_preset import DataDriftPreset
 from evidently.report import Report
+from prefect import flow
 
 
 def take_action():
     pass
 
 
+@flow(log_prints=True)
 def model_monitor():
     report = Report(
         metrics=[
@@ -14,8 +18,11 @@ def model_monitor():
         ]
     )
 
+    curr = strftime("%d-%m-%Y", gmtime())
+    dataset_path = f"inference/input/input_{curr}.csv"
+
     df_ref = pd.read_csv("dataset/train.csv")
-    df_live = pd.read_csv("inference/input/input_13-02-2024.csv")
+    df_live = pd.read_csv(dataset_path)
 
     report.run(reference_data=df_ref, current_data=df_live)
 
@@ -25,8 +32,6 @@ def model_monitor():
         print("Data drift detected!")
         take_action()
 
-    report.save_json("report.json")
-    report.save_html("report.html")
 
 
 if __name__ == "__main__":

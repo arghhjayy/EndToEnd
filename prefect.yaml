@@ -1,8 +1,6 @@
-# Generic metadata about this project
 name: EndToEnd
 prefect-version: 2.14.18
 
-# the deployments section allows you to provide configuration for deploying flows
 deployments:
 - name: generate-data
   version: v1
@@ -17,7 +15,7 @@ deployments:
     work_queue_name:
     job_variables: {}
   schedule:
-    cron: 34 14 * * *
+    cron: 18 17 * * *
     timezone: Asia/Calcutta
     day_or: true
     active: true
@@ -29,7 +27,19 @@ deployments:
     work_queue_name:
     job_variables: {}
   schedule:
-    cron: 35 14 * * *
+    cron: 19 17 * * *
+    timezone: Asia/Calcutta
+    day_or: true
+    active: true
+- name: model-monitor
+  entrypoint: src/model_monitor.py:model_monitor
+  description: Perform data drift check on the deployed model
+  work_pool:
+    name: model-monitor-work-pool
+    work_queue_name:
+    job_variables: {}
+  schedule:
+    cron: 20 17 * * *
     timezone: Asia/Calcutta
     day_or: true
     active: true
