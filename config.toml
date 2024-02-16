@@ -6,3 +6,8 @@ output_dir = "inference/output"
 train_path = "dataset/train.csv"
 test_path = "dataset/test.csv"
 intermediate_data_dir = "intermediate"
+
+[alert]
+sender_email = "your@email.com"
+sender_password = "yourpassword"
+to_email = "recipient@email.com"
