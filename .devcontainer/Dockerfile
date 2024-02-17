@@ -16,4 +16,7 @@ RUN python -m pip install poetry==1.7.1
 
 RUN poetry install --no-root
 
-ENTRYPOINT ["conda", "activate", "endtoend"]
+# To fix an mlflow bug which is to be fixed its next release
+RUN sed -i 's/.get("mlflow\.app", \[\])/.select(group="mlflow.app")/' /opt/conda/envs/endtoend/lib/python3.12/site-packages/mlflow/cli.py
+
+ENTRYPOINT ["source", "activate", "endtoend"]
