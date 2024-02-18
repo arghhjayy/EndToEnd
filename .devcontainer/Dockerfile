@@ -19,4 +19,7 @@ RUN poetry install --no-root
 # To fix an mlflow bug which is to be fixed its next release
 RUN sed -i 's/.get("mlflow\.app", \[\])/.select(group="mlflow.app")/' /opt/conda/envs/endtoend/lib/python3.12/site-packages/mlflow/cli.py
 
+# make prefect available without sudo
+RUN chmod 777 /opt/conda/envs/endtoend/lib/python3.12/site-packages/prefect/*
+
 ENTRYPOINT ["source", "activate", "endtoend"]
