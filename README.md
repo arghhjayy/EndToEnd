@@ -2,32 +2,15 @@
 
 Project setup:
 
-1. Download and install Anaconda: https://www.anaconda.com/download
-2. Setup a virtual env using conda cli: `conda env create -f environment.yml`
-3. Activate the env: `conda activate endtoend`
-4. Install `poetry`: `python -m pip install poetry`
-5. Install all dependencies using `poetry` cli: `poetry install --no-root`
-6. Run the mlflow server: `mlflow server`, run the prefect server: `prefect server start`
+1. Open this in VSCode
+2. Install [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+3. Do `Cmd + Shift + P` -> `Dev Containers: Rebuild Container Without Cache`
+4. Activate the conda virtual environment: `source activate endtoend`
+5. Inside Dev Container, run mlflow and prefect local servers: `nohup bash ./start_backend.sh`
 
 ## Model training:
 
 Run: `python main.py`
-
-**Note**: To make it work, we need to do a quick hack:<br>
-in `<condaenvname>/lib/python3.12/importlib/metadata/__init__.py/`,
-add a method `get()` to the class `EntryPoints(tuple)`:
-
-```python
-def get(self, name, default):
-    try:
-        return self.__getitem__(name)
-    except Exception:
-        return default
-```
-
-in Windows conda, the location of the file most likely is:
-<br>
-`C:\Users\<YourUserName>\anaconda3\envs\<condaenvname>\Lib\importlib\metadata\__init__.py`
 
 ## Model serving (deployment)
 
