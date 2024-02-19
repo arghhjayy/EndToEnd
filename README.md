@@ -35,11 +35,11 @@ If you want to run it for debugging, make sure you change the CRON expressions i
 
 - :white_check_mark: Train and test flow
 - :white_check_mark: Log metrics and artifacts to MLFlow
-- :hourglass: Prefect for workflows
+- :white_check_mark: Prefect for workflows
 - :white_check_mark: Makefile
 - :white_check_mark: Basic tests
-- :hourglass: Model monitoring + scheduling it
-- :soon: Containerization
+- :white_check_mark: Model monitoring + scheduling it
+- :hourglass: Containerization
 - :soon: Use databases for input/output
 - :soon: Feature store and vector store - TBD
 - :soon: Streaming features
