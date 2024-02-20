@@ -16,4 +16,10 @@ RUN sed -i 's/.get("mlflow\.app", \[\])/.select(group="mlflow.app")/' /opt/conda
 # make prefect available without sudo
 RUN chmod 777 /opt/conda/envs/endtoend/lib/python3.12/site-packages/prefect/*
 
-ENTRYPOINT ["nohup ./start_backend.sh && python main.py"]
+RUN chmod +x ./entrypoint.sh
+
+EXPOSE 4200
+
+EXPOSE 5000
+
+ENTRYPOINT ["./entrypoint.sh"]
