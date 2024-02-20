@@ -9,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
 
-from src.enum_classes import DatasetType
+from enum_classes import DatasetType
 
 
 @task
@@ -53,9 +53,7 @@ def preprocess(df, config=None, dataset_type=DatasetType.TRAIN):
             ]
         )
         full_pipeline.fit(X)
-        df_preprocessed = pd.DataFrame(
-            full_pipeline.transform(X), columns=X.columns
-        )
+        df_preprocessed = pd.DataFrame(full_pipeline.transform(X), columns=X.columns)
 
         joblib.dump(full_pipeline, pipeline_path_local)
 
@@ -76,14 +74,14 @@ def preprocess(df, config=None, dataset_type=DatasetType.TRAIN):
 
         full_pipeline = joblib.load(pipeline_path_mlflow)
 
-        df_preprocessed = pd.DataFrame(
-            full_pipeline.transform(X), columns=X.columns
-        )
+        df_preprocessed = pd.DataFrame(full_pipeline.transform(X), columns=X.columns)
 
     return df_preprocessed
 
 
-def load_and_preprocess(dataset: DatasetType = 1, config=None) -> pd.DataFrame:
+def load_and_preprocess(
+    dataset: DatasetType = DatasetType.TRAIN, config=None
+) -> pd.DataFrame:
     match dataset:  # noqa
         case DatasetType.TRAIN:
             print("Using train data")
@@ -91,12 +89,10 @@ def load_and_preprocess(dataset: DatasetType = 1, config=None) -> pd.DataFrame:
         case DatasetType.TEST:
             print("Using test data")
             dataset_path = config["data"]["test_path"]
-        case 3:
+        case DatasetType.BATCH_INFER:
             curr = strftime("%d-%m-%Y", gmtime())
             print("done")
-            dataset_path = (
-                config["inference"]["input_dir"] + f"/input_{curr}.csv"
-            )
+            dataset_path = config["inference"]["input_dir"] + f"/input_{curr}.csv"
         case _:
             raise ValueError(
                 f"""Please pass a valid value to param 'dataset',
