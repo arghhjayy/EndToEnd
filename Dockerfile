@@ -22,4 +22,4 @@ EXPOSE 4200
 
 EXPOSE 5000
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/workspaces/EndToEnd/entrypoint.sh"]
