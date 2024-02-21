@@ -17,7 +17,7 @@ def infer():
         config = tomllib.load(f)
 
     model = load_model("model_dir")
-    df = load_and_preprocess(dataset=3, config=config)
+    df = load_and_preprocess(dataset=DatasetType.BATCH_INFER, config=config)
 
     y_infer = model.predict(df)
 
@@ -33,7 +33,4 @@ def infer():
 
 if __name__ == "__main__":
     # dev:
-    os.environ["TESTING"] = "TRUE"
-    with open("config.toml", "rb") as f:
-        config = tomllib.load(f)
-    infer(config)
+    infer()
