@@ -5,10 +5,21 @@ from time import gmtime, strftime
 import pandas as pd
 from prefect import flow
 
+from db.utils import get_db_connection
+
 
 # generate data for dummy inference
 @flow(log_prints=True)
-def generate_data(size=1000, based_on="train", strategy="randomized"):
+def generate_data(size=1000, based_on="train", strategy="randomized", type="csv"):
+    if type == "db":
+        connection = get_db_connection(database="data")
+        with connection:
+            df = pd.DataFrame.from_dict({"something": [1, 2, 3], "intheway": [4, 5, 6]})
+            print(df.head(5))
+            df.to_sql("fake _data", con=connection)
+
+        return None
+
     if based_on == "train":
         df = pd.read_csv("dataset/train.csv")
     else:
@@ -27,8 +38,7 @@ def generate_data(size=1000, based_on="train", strategy="randomized"):
         day = [random.randint(1, 31) for _ in range(size)]
         month = [random.choice(df.month.unique()) for _ in range(size)]
         duration = [
-            random.randint(df.duration.min(), df.duration.max())
-            for _ in range(size)
+            random.randint(df.duration.min(), df.duration.max()) for _ in range(size)
         ]
         campaign = [random.choice(df.campaign.unique()) for _ in range(size)]
         pdays = [random.choice([random.randint(0, 365), -1]) for _ in range(size)]
@@ -70,6 +80,6 @@ def generate_data(size=1000, based_on="train", strategy="randomized"):
 
 if __name__ == "__main__":
     # dev:
-    generate_data.fn(size=1000)
+    generate_data.fn(size=1000, type="db")
     # generate data everyday, at 2:05 PM IST
     # generate_data.serve(name="generate-data", cron="26 14 * * *")
