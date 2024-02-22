@@ -45,6 +45,6 @@ If you want to run it for debugging, make sure you change the CRON expressions i
 - :white_check_mark: Basic tests
 - :white_check_mark: Model monitoring + scheduling it
 - :hourglass: Containerization
-- :soon: Use databases for input/output
+- :hourglass: Use databases for input/output
 - :soon: Feature store and vector store - TBD
 - :soon: Streaming features
