@@ -12,6 +12,11 @@ Project setup:
 
 Run: `python main.py`
 
+## Model training using Docker:
+
+Build: `docker build . -t endtoend:latest`
+Run: `docker run endtoend:latest`
+
 ## Model serving (deployment)
 
 For batch inference, do the following:
