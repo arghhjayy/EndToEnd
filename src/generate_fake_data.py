@@ -11,15 +11,6 @@ from db.utils import get_db_connection
 # generate data for dummy inference
 @flow(log_prints=True)
 def generate_data(size=1000, based_on="train", strategy="randomized", type="csv"):
-    if type == "db":
-        connection = get_db_connection(database="data")
-        with connection:
-            df = pd.DataFrame.from_dict({"something": [1, 2, 3], "intheway": [4, 5, 6]})
-            print(df.head(5))
-            df.to_sql("fake _data", con=connection)
-
-        return None
-
     if based_on == "train":
         df = pd.read_csv("dataset/train.csv")
     else:
@@ -70,12 +61,19 @@ def generate_data(size=1000, based_on="train", strategy="randomized", type="csv"
     else:
         generated_df = df.sample(n=size)
 
-    curr = strftime("%d-%m-%Y", gmtime())
-    os.makedirs("inference", exist_ok=True)
-    os.makedirs("inference/input", exist_ok=True)
-    dataset_path = f"inference/input/input_{curr}.csv"
-    generated_df.to_csv(dataset_path, index=False)
-    return dataset_path
+    # save to either csv or db
+    if type == "csv":
+        curr = strftime("%d-%m-%Y", gmtime())
+        os.makedirs("inference", exist_ok=True)
+        os.makedirs("inference/input", exist_ok=True)
+        dataset_path = f"inference/input/input_{curr}.csv"
+        generated_df.to_csv(dataset_path, index=False)
+        return dataset_path
+    else:
+        engine = get_db_connection(database="INFERENCE")
+        generated_df.to_sql("INPUT", con=engine, if_exists="replace", index=False)
+
+        return None
 
 
 if __name__ == "__main__":
