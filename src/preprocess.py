@@ -9,6 +9,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, StandardScaler
 
+from db.utils import get_db_connection
 from enum_classes import DatasetType
 
 
@@ -99,7 +100,12 @@ def load_and_preprocess(
                 allowed values: {[t.value for t in DatasetType]}"""
             )
 
-    df = pd.read_csv(dataset_path)
+    if config["inference"]["type"] == "db":
+        engine = get_db_connection("INFERENCE")
+        df = pd.read_sql(sql="SELECT * FROM INPUT", con=engine)
+    else:
+        df = pd.read_csv(dataset_path)
+
     X, y = df.loc[:"y"], df["y"]
     y = y.replace({"no": 0, "yes": 1})
     if os.environ.get("TESTING", False):
