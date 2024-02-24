@@ -1,4 +1,5 @@
 [inference]
+type = "db"
 input_dir = "inference/input"
 output_dir = "inference/output"
 
