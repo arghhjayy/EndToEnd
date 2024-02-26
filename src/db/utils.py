@@ -1,8 +1,13 @@
+import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-username = "root"
-password = "password"
-host = "127.0.0.1"
+load_dotenv()
+
+username = os.environ["DB_USERNAME"]
+password = os.environ["DB_PASSWORD"]
+host = os.environ["DB_HOST"]
 
 
 def get_db_connection(database):
