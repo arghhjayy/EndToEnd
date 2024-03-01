@@ -16,6 +16,8 @@ def infer():
     with open("config.toml", "rb") as f:
         config = tomllib.load(f)
 
+    print(config)
+
     model = load_model("model_dir")
     df = load_and_preprocess(dataset=DatasetType.BATCH_INFER, config=config)
 

@@ -1,5 +1,6 @@
 import os
 import random
+import tomllib
 from time import gmtime, strftime
 
 import pandas as pd
@@ -10,7 +11,11 @@ from db.utils import get_db_connection
 
 # generate data for dummy inference
 @flow(log_prints=True)
-def generate_data(size=1000, based_on="train", strategy="randomized", type="csv"):
+def generate_data(size=1000, based_on="train", strategy="randomized"):
+    with open("config.toml", "rb") as f:
+        config = tomllib.load(f)
+    infer_type = config["inference"]["type"]
+
     if based_on == "train":
         df = pd.read_csv("dataset/train.csv")
     else:
@@ -62,7 +67,7 @@ def generate_data(size=1000, based_on="train", strategy="randomized", type="csv"
         generated_df = df.sample(n=size)
 
     # save to either csv or db
-    if type == "csv":
+    if infer_type == "csv":
         curr = strftime("%d-%m-%Y", gmtime())
         os.makedirs("inference", exist_ok=True)
         os.makedirs("inference/input", exist_ok=True)
@@ -78,6 +83,6 @@ def generate_data(size=1000, based_on="train", strategy="randomized", type="csv"
 
 if __name__ == "__main__":
     # dev:
-    generate_data.fn(size=1000, type="db")
+    generate_data.fn(size=1000)
     # generate data everyday, at 2:05 PM IST
     # generate_data.serve(name="generate-data", cron="26 14 * * *")
