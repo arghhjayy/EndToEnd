@@ -166,3 +166,4 @@ mlartifacts/
 model_dir/
 inference/
 .DS_Store
+nohup.out

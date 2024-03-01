@@ -1,7 +1,8 @@
 {
-	"name": "Miniconda (Python 3)",
-	"build": {
-		"context": "..",
-		"dockerfile": "Dockerfile"
-	}
+  "name": "MainContainer",
+  "build": {
+    "context": "..",
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": ["--network=my_network"]
 }

@@ -64,7 +64,6 @@ def preprocess(df, config=None, dataset_type=DatasetType.TRAIN):
                 run_id=config["run_id"],
             )
     else:
-        # BUG: load pipeline and transform when a train run is already done
         pipeline_path_mlflow = os.path.join(
             "mlartifacts",
             config["experiment_id"],
@@ -92,7 +91,6 @@ def load_and_preprocess(
             dataset_path = config["data"]["test_path"]
         case DatasetType.BATCH_INFER:
             curr = strftime("%d-%m-%Y", gmtime())
-            print("done")
             dataset_path = config["inference"]["input_dir"] + f"/input_{curr}.csv"
         case _:
             raise ValueError(
@@ -111,6 +109,7 @@ def load_and_preprocess(
     if os.environ.get("TESTING", False):
         X_preprocessed = preprocess.fn(X)
     else:
+        print("Calling the task")
         X_preprocessed = preprocess(X, config=config, dataset_type=dataset)
     intermediate_dir = config["data"]["intermediate_data_dir"]
     X_preprocessed.to_csv(

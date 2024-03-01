@@ -12,3 +12,6 @@ intermediate_data_dir = "intermediate"
 sender_email = "your@email.com"
 sender_password = "yourpassword"
 to_email = "recipient@email.com"
+
+experiment_id = "658352449616570607"
+run_id = "12bfbe8378e54893b818aa316149c275"

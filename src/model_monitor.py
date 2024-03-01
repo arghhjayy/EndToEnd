@@ -8,6 +8,8 @@ from evidently.metric_preset import DataDriftPreset
 from evidently.report import Report
 from prefect import flow
 
+from db.utils import get_db_connection
+
 
 def send_email(sender_email, sender_password, recipient_email, subject, body):
     # Create the EmailMessage object
@@ -38,17 +40,25 @@ def take_action(config):
 
 @flow(log_prints=True)
 def model_monitor(config=None):
+    with open("config.toml", "rb") as f:
+        config = tomllib.load(f)
+
     report = Report(
         metrics=[
             DataDriftPreset(),
         ]
     )
 
-    curr = strftime("%d-%m-%Y", gmtime())
-    dataset_path = f"inference/input/input_{curr}.csv"
-
     df_ref = pd.read_csv("dataset/train.csv")
-    df_live = pd.read_csv(dataset_path)
+
+    if config["infer"]["type"] == "csv":
+        curr = strftime("%d-%m-%Y", gmtime())
+        dataset_path = f"inference/input/input_{curr}.csv"
+
+        df_live = pd.read_csv(dataset_path)
+    else:
+        engine = get_db_connection("INFERENCE")
+        df_live = pd.read_sql(sql="SELECT * FROM INPUT", con=engine)
 
     report.run(reference_data=df_ref, current_data=df_live)
 
@@ -60,6 +70,4 @@ def model_monitor(config=None):
 
 
 if __name__ == "__main__":
-    with open("config.toml", "rb") as f:
-        config = tomllib.load(f)
-    model_monitor(config)
+    model_monitor.fn()
